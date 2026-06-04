@@ -9,6 +9,9 @@ import (
 	"github.com/Fheyalabs/ares-core/pkg/ares/crypto/cgo"
 )
 
+// PriceBand is the public [floor, cap] used to normalize prices (server-known policy).
+type PriceBand struct{ FloorCents, CapCents int }
+
 // RunAuction runs the single-key reverse auction end to end:
 //
 //	rider keygen → each driver encrypts its OWN price under the rider's pk
