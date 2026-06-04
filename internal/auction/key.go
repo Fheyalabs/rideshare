@@ -1,6 +1,13 @@
-// Package auction holds the reverse-auction logic: the lexicographic
-// ranking key (this file, plaintext — the contract the FHE reproduces)
-// and the real-FHE argmin (run.go).
+// Package auction implements rideshare's single-key reverse auction — the only
+// homomorphic circuit in the app. Drivers submit one encrypted, Ed25519-signed
+// price under the rider's single-key CKKS public key; the server runs a blind
+// soft-mask argmin over the server-built lexicographic key (price → ★ → dist²,
+// with ★ and dist² server-authoritative); the rider alone decrypts the masks,
+// recovers the agreed price from the winner's own committed bid (binding), and
+// verifies the winning driver's signature (ghost-driver rejection). This file
+// holds the plaintext ranking contract (Weights/BuildKey); signing.go the
+// Ed25519 binding; run.go (build tag openfhe) the real CKKS flow via ARES-core's
+// SingleKey* primitives.
 package auction
 
 // Weights parameterise the lexicographic key. K must exceed the maximum
