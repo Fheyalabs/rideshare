@@ -1,0 +1,13 @@
+.claude/
+.cursor/
+.vscode/
+xcuserdata/
+Local.xcconfig
+*.o
+*.a
+*.test
+*.out
+*.prof
+/bin/
+node_modules/
+.DS_Store
