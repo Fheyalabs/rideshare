@@ -30,8 +30,8 @@ func TestE2E_BlindAuction_DiscoveryToWinner(t *testing.T) {
 	defer ts.Close()
 
 	// 1. Rider keygen.
-	params := cgo.ContractParams{RingDim: 1 << 15, Depth: 5, ScalingFactor: float64(uint64(1) << 50)}
-	pk, sk, err := cgo.SingleKeyGen(params)
+	cgoParams := cgo.ContractParams{RingDim: 1 << 15, Depth: 5, ScalingFactor: float64(uint64(1) << 50)}
+	pk, sk, err := cgo.SingleKeyGen(cgoParams)
 	if err != nil {
 		t.Fatalf("keygen: %v", err)
 	}
@@ -57,7 +57,7 @@ func TestE2E_BlindAuction_DiscoveryToWinner(t *testing.T) {
 		cell := discovery.CellToString(discovery.CellAt(d.lat, d.lng, discovery.BaseResolution))
 		pushGrid(t, ts.URL, d.name, cell, true)
 		driverKeys[i], _ = sign.NewEd25519Signer()
-		enc, _ := cgo.SingleKeyEncrypt(params, pk, float64(d.price))
+		enc, _ := cgo.SingleKeyEncrypt(cgoParams, pk, float64(d.price))
 		driverEncs[i] = enc
 		driverNonces[i] = []byte(d.name)
 	}
@@ -77,11 +77,11 @@ func TestE2E_BlindAuction_DiscoveryToWinner(t *testing.T) {
 	}
 
 	// 5. Submit signed encrypted bids.
-	for i, d := range drivers {
+	for i := range drivers {
 		bidHandle := putArtifact(t, ts.URL, driverEncs[i])
 		sig, _ := auction.SignBid(driverKeys[i], []byte(sessionID), driverEncs[i], driverNonces[i])
 		submitBid(t, ts.URL, sessionID, bidHandle, driverNonces[i],
-			driverKeys[i].PublicKey(), sig, d.star, d.distSq)
+			driverKeys[i].PublicKey(), sig)
 	}
 
 	// 6. Server runs the blind auction; rider fetches + decrypts masks.
@@ -90,7 +90,7 @@ func TestE2E_BlindAuction_DiscoveryToWinner(t *testing.T) {
 	var bestVal float64
 	for i, h := range handles {
 		ct := getArtifact(t, ts.URL, h)
-		vals, err := cgo.SingleKeyDecrypt(params, sk, ct, 1)
+		vals, err := cgo.SingleKeyDecrypt(cgoParams, sk, ct, 1)
 		if err != nil {
 			t.Fatalf("decrypt mask[%d]: %v", i, err)
 		}
@@ -106,12 +106,11 @@ func TestE2E_BlindAuction_DiscoveryToWinner(t *testing.T) {
 
 // --- openfhe-only HTTP helpers ---
 
-func submitBid(t *testing.T, url, sessionID, bidHandle string, nonce, pubkey, sig []byte, star, dist float64) {
+func submitBid(t *testing.T, url, sessionID, bidHandle string, nonce, pubkey, sig []byte) {
 	t.Helper()
 	body, _ := json.Marshal(map[string]any{
 		"session_id": sessionID, "bid_handle": bidHandle,
 		"nonce": nonce, "pubkey": pubkey, "sig": sig,
-		"star_norm": star, "dist_sq": dist,
 	})
 	resp, err := http.Post(url+"/session/bid", "application/json", bytes.NewReader(body))
 	if err != nil {

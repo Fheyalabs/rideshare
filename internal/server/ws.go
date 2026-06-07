@@ -8,6 +8,7 @@ import (
 	"github.com/Fheyalabs/ares-core/pkg/ares/transport"
 	"github.com/Fheyalabs/rideshare/internal/discovery"
 	"github.com/Fheyalabs/rideshare/internal/offerpool"
+	"github.com/Fheyalabs/rideshare/internal/rating"
 	"github.com/Fheyalabs/rideshare/internal/session"
 )
 
@@ -34,6 +35,8 @@ type RideshareServer struct {
 	pools    map[string]*offerpool.Pool         // sessionID → held-offer pool
 	sessions map[string]*session.AuctionSession // sessionID → auction session
 	invites  map[string][]Invite                // driver pseudonym → pending invites
+	region   regionState
+	ratings  *rating.Store
 }
 
 // NewRideshareServer returns a server with the rideshare endpoints mounted.
@@ -45,6 +48,7 @@ func NewRideshareServer(cfg Config) *RideshareServer {
 		pools:     make(map[string]*offerpool.Pool),
 		sessions:  make(map[string]*session.AuctionSession),
 		invites:   make(map[string][]Invite),
+		ratings:   rating.NewStore(4.3, 20),
 	}
 	rs.mux.HandleFunc("POST /artifacts", rs.handleArtifactPut)
 	rs.mux.HandleFunc("GET /artifacts/{handle}", rs.handleArtifactGet)
@@ -56,8 +60,14 @@ func NewRideshareServer(cfg Config) *RideshareServer {
 	rs.mux.HandleFunc("POST /offer/accept", rs.handleOfferAccept)
 	rs.mux.HandleFunc("POST /offer/cancel", rs.handleOfferCancel)
 	rs.mux.HandleFunc("GET /offer/held", rs.handleOfferHeld)
+	rs.mux.HandleFunc("GET /region", rs.handleRegion)
+	rs.mux.HandleFunc("GET /customization", rs.handleCustomization)
+	rs.mux.HandleFunc("POST /slices", rs.handleSlices)
 	return rs
 }
+
+// Ratings returns the server's driver rating store (for seeding test data).
+func (rs *RideshareServer) Ratings() *rating.Store { return rs.ratings }
 
 // --- artifacts ---
 
@@ -208,7 +218,8 @@ func (rs *RideshareServer) handleSessionOpen(w http.ResponseWriter, r *http.Requ
 	sess := session.NewAuctionSession([]byte(body.SessionID),
 		defaultSessionParams(body.RingDim, body.Depth),
 		auctionPriceBand(body.FloorCents, body.CapCents),
-		session.DefaultWeights(), 1)
+		session.DefaultWeights(), 1,
+		rs.ratings)
 	sess.SetRiderPK(pk)
 
 	inv := Invite{
@@ -267,7 +278,7 @@ func (rs *RideshareServer) handleSessionBid(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	sb := auctionSignedBid{EncBid: encBid, Nonce: body.Nonce, Pubkey: body.Pubkey, Sig: body.Sig}
-	if err := sess.SubmitBid(sb, body.StarNorm, body.DistSq); err != nil {
+	if err := sess.SubmitBid(sb); err != nil {
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
