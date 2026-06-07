@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"strings"
 
 	"github.com/paulmach/osm"
 	"github.com/paulmach/osm/osmpbf"
@@ -20,9 +21,7 @@ type WayRec struct {
 	MaxSpeedKmh float64
 }
 
-// BuildGraph turns distilled ways + node coords into a routing graph. Pure +
-// unit-testable. Edges are split per consecutive node pair; non-drivable ways
-// and ways with missing node coords are skipped.
+// BuildGraph turns distilled ways + node coords into a routing graph.
 func BuildGraph(ways []WayRec, coords map[int64][2]float64) *Graph {
 	g := NewGraph()
 	for _, w := range ways {
@@ -53,8 +52,7 @@ func BuildGraph(ways []WayRec, coords map[int64][2]float64) *Graph {
 	return g
 }
 
-// ParsePBF reads an OSM .pbf and builds the graph (two passes: ways, then the
-// node coords they reference).
+// ParsePBF reads an OSM .pbf and builds the graph (two passes).
 func ParsePBF(path string) (*Graph, error) {
 	ways, nodeIDs, err := scanWays(path)
 	if err != nil {
@@ -65,6 +63,12 @@ func ParsePBF(path string) (*Graph, error) {
 		return nil, err
 	}
 	return BuildGraph(ways, coords), nil
+}
+
+// isImplicitOneway returns true for highway types that are implicitly one-way
+// even without an explicit oneway=yes tag.
+func isImplicitOneway(highway string) bool {
+	return highway == "motorway" || highway == "motorway_link"
 }
 
 func scanWays(path string) ([]WayRec, map[int64]struct{}, error) {
@@ -87,15 +91,37 @@ func scanWays(path string) ([]WayRec, map[int64]struct{}, error) {
 		if _, drive := Classify(hw); !drive {
 			continue
 		}
+		// Determine oneway: explicit tag overrides, then implicit for motorways/roundabouts.
+		onewayTag := strings.ToLower(w.Tags.Find("oneway"))
+		oneway := false
+		switch onewayTag {
+		case "yes", "true", "1":
+			oneway = true
+		case "-1", "reverse":
+			oneway = true // reversed — we flip node order below
+		case "no", "false", "0":
+			oneway = false
+		default:
+			// Implicit oneway for motorways/motorway_links and roundabouts.
+			if isImplicitOneway(hw) || strings.ToLower(w.Tags.Find("junction")) == "roundabout" {
+				oneway = true
+			}
+		}
 		ids := make([]int64, len(w.Nodes))
 		for i, wn := range w.Nodes {
 			ids[i] = int64(wn.ID)
 			need[ids[i]] = struct{}{}
 		}
+		// Handle oneway=-1: reverse node order
+		if onewayTag == "-1" || onewayTag == "reverse" {
+			for i, j := 0, len(ids)-1; i < j; i, j = i+1, j-1 {
+				ids[i], ids[j] = ids[j], ids[i]
+			}
+		}
 		spd, _ := strconv.ParseFloat(w.Tags.Find("maxspeed"), 64)
 		ways = append(ways, WayRec{
 			Nodes: ids, Highway: hw, Ref: w.Tags.Find("ref"),
-			Oneway:      w.Tags.Find("oneway") == "yes",
+			Oneway:      oneway,
 			MaxSpeedKmh: spd,
 		})
 	}

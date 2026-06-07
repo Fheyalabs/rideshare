@@ -56,6 +56,16 @@ func (rs *RideshareServer) handleSlices(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "invalid body", http.StatusBadRequest)
 		return
 	}
+	if len(body.NodeSets) > 32 {
+		http.Error(w, "too many node sets (max 32)", http.StatusBadRequest)
+		return
+	}
+	for _, set := range body.NodeSets {
+		if len(set) > 4096 {
+			http.Error(w, "node set too large (max 4096)", http.StatusBadRequest)
+			return
+		}
+	}
 	rs.region.mu.RLock()
 	g := rs.region.graph
 	rs.region.mu.RUnlock()

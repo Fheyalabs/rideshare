@@ -250,8 +250,6 @@ type sessionBidReq struct {
 	Nonce     []byte  `json:"nonce"`
 	Pubkey    []byte  `json:"pubkey"`
 	Sig       []byte  `json:"sig"`
-	StarNorm  float64 `json:"star_norm"`
-	DistSq    float64 `json:"dist_sq"`
 }
 
 func (rs *RideshareServer) handleSessionBid(w http.ResponseWriter, r *http.Request) {

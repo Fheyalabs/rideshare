@@ -1,6 +1,9 @@
 package routing
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"sort"
+)
 
 type wireGraph struct {
 	Nodes []Node `json:"nodes"`
@@ -9,11 +12,13 @@ type wireGraph struct {
 
 // Serialize encodes the graph for client download (cached region). JSON for
 // cross-language clients; swap to a compact binary later if size demands.
+// Nodes are sorted by ID for deterministic output (stable ETags, reproducible artifacts).
 func Serialize(g *Graph) ([]byte, error) {
 	w := wireGraph{Edges: g.Edges}
 	for _, n := range g.Nodes {
 		w.Nodes = append(w.Nodes, n)
 	}
+	sort.Slice(w.Nodes, func(i, j int) bool { return w.Nodes[i].ID < w.Nodes[j].ID })
 	return json.Marshal(w)
 }
 
