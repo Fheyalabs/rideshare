@@ -11,7 +11,9 @@ func (rs *RideshareServer) RegisterOpenFHERoutes() {
 
 func (rs *RideshareServer) handleSessionMasks(w http.ResponseWriter, r *http.Request) {
 	sid := r.PathValue("id")
+	rs.mu.RLock()
 	sess, ok := rs.sessions[sid]
+	rs.mu.RUnlock()
 	if !ok {
 		http.Error(w, "session not found", http.StatusNotFound)
 		return

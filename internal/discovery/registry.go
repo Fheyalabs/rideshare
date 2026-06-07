@@ -13,8 +13,10 @@ func NewRegistry() *Registry {
 	return &Registry{driver: make(map[string]Cell)}
 }
 
-// Heartbeat records (or updates) a driver's base cell.
-func (r *Registry) Heartbeat(pseudonym string, cell Cell) {
+// SetCell records (or updates) a driver's current coarse cell. Drivers call this
+// on a grid-change event (event-driven, no periodic heartbeat); call Remove when
+// going off-duty / mid-ride.
+func (r *Registry) SetCell(pseudonym string, cell Cell) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.driver[pseudonym] = cell

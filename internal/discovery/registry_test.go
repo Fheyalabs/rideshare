@@ -6,7 +6,7 @@ func TestRegistry_EscalatesUntilTarget(t *testing.T) {
 	r := NewRegistry()
 	base := CellAt(51.0493, 13.7384, BaseResolution)
 	// One driver in a sibling base cell (shares the parent, not the base cell).
-	r.Heartbeat("drv-1", CellAt(51.0500, 13.7390, BaseResolution))
+	r.SetCell("drv-1", CellAt(51.0500, 13.7390, BaseResolution))
 	// Rider at base cell, wants >=1 candidate.
 	cands, cell := r.Discover(base, 1, 3) // target=1, maxWiden=3
 	if len(cands) < 1 {
@@ -25,7 +25,7 @@ func TestRegistry_EmptyReturnsNone(t *testing.T) {
 func TestRegistry_RemoveAndReheartbeat(t *testing.T) {
 	r := NewRegistry()
 	c := CellAt(51.0493, 13.7384, BaseResolution)
-	r.Heartbeat("drv-1", c)
+	r.SetCell("drv-1", c)
 	cands, _ := r.Discover(c, 1, 0)
 	if len(cands) != 1 {
 		t.Fatalf("expected 1, got %d", len(cands))

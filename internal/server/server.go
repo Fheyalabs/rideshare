@@ -1,6 +1,8 @@
-// Package server wires the rideshare HTTP+WS endpoints over the discovery,
-// session, and offer-pool components. The server is BLIND — it never holds a
-// secret key; it relays ciphertext handles and runs the blind auction.
+// Package server wires the rideshare HTTP (REST) endpoints over the discovery,
+// session, and offer-pool components. Big ciphertexts move by content handle via
+// a content-addressed artifact store; clients poll. The server is BLIND — it
+// never holds a secret key and never sees coordinates (clients send H3 cell ids,
+// never GPS); it relays ciphertext handles and runs the blind auction.
 package server
 
 import "net/http"
@@ -10,7 +12,7 @@ type Config struct {
 	Addr string // listen address, e.g. ":8080"
 }
 
-// Server is the rideshare HTTP+WS service.
+// Server is the rideshare HTTP service.
 type Server struct {
 	cfg Config
 	mux *http.ServeMux
