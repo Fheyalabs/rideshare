@@ -14,6 +14,9 @@ type DriverBid struct {
 	DistSq     float64 // server's coarse pickup-leg, squared
 }
 
+// PriceBand is the public [floor, cap] used to normalize prices.
+type PriceBand struct{ FloorCents, CapCents int }
+
 // StarPenalty converts the normalized ★ into the key's secondary term:
 // higher ★ ⇒ smaller penalty ⇒ lower (better) key.
 func (b DriverBid) StarPenalty() float64 { return 5.0 - b.StarNorm }

@@ -12,31 +12,25 @@ import (
 // The server never sees a secret key — it only gets back encrypted masks.
 // Returns serialized encrypted mask ciphertexts (one per driver).
 func (s *AuctionSession) RunBlindAuction() ([][]byte, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	pk, encBids, stars, dists, nonces, band, w, degree := s.EncodeCGO()
 
-	if len(s.riderPK) == 0 {
+	if len(pk) == 0 {
 		return nil, fmt.Errorf("rider pk not set")
 	}
-	n := len(s.bids)
+	n := len(encBids)
 	if n < 2 {
 		return nil, fmt.Errorf("need >= 2 bids, got %d", n)
 	}
 
-	encBids := make([][]byte, n)
-	stars := make([]float64, n)
-	dists := make([]float64, n)
-	nonces := make([][]byte, n)
-	for i, b := range s.bids {
-		encBids[i] = b.sb.EncBid
-		stars[i] = b.star
-		dists[i] = b.dist
-		nonces[i] = b.sb.Nonce
+	cgoParams := cgo.ContractParams{
+		RingDim:       s.params.RingDim,
+		Depth:         s.params.Depth,
+		ScalingFactor: s.params.ScalingFactor,
 	}
+	cgoW := cgo.AuctionWeights{K: w.K, WStar: w.WStar, WDist: w.WDist}
 
 	return cgo.SingleKeyAuctionServerEnc(
-		s.params, s.riderPK, encBids, stars, dists, nonces,
-		s.band.FloorCents, s.band.CapCents,
-		s.w, s.degree,
+		cgoParams, pk, encBids, stars, dists, nonces,
+		band.Floor, band.Cap, cgoW, degree,
 	)
 }
