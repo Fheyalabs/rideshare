@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-	port := flag.Int("port", 8080, "server port")
+	port := flag.Int("port", 9000, "server port")
 	n := flag.Int("n", 5, "ghost driver count")
 	interval := flag.Duration("interval", 5*time.Second, "time between lifecycle loops")
 	maxLoops := flag.Int("loops", 0, "max loops (0 = infinite)")
