@@ -16,3 +16,5 @@ node_modules/
 /server
 /buildgraph
 Package.resolved
+clients/kotlin/.gradle/
+clients/kotlin/build/
