@@ -11,3 +11,7 @@ Local.xcconfig
 /bin/
 node_modules/
 .DS_Store
+# Build artifacts
+/ghostfleet
+/server
+/buildgraph

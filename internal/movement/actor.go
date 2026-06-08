@@ -26,7 +26,7 @@ func NewActor(id string, g *routing.Graph, track []int64) *Actor {
 func (a *Actor) SetTrack(track []int64) { a.track, a.seg, a.frac = track, 0, 0 }
 
 // Arrived reports whether the actor reached the end of its track.
-func (a *Actor) Arrived() bool { return a.track == nil || a.seg >= len(a.track)-1 }
+func (a *Actor) Arrived() bool { return a.track != nil && a.seg >= len(a.track)-1 }
 
 // Advance moves the actor forward by dt seconds at speedMps along its track.
 func (a *Actor) Advance(dt, speedMps float64) {
@@ -52,9 +52,13 @@ func (a *Actor) Advance(dt, speedMps float64) {
 	}
 }
 
-// LatLng returns the actor's interpolated position.
+// LatLng returns the actor's interpolated position. Returns 0,0 if the track
+// is empty (actor has not been assigned a route).
 func (a *Actor) LatLng() (float64, float64) {
-	if a.Arrived() && len(a.track) > 0 {
+	if a.track == nil || len(a.track) == 0 {
+		return 0, 0
+	}
+	if a.Arrived() {
 		n := a.g.Nodes[a.track[len(a.track)-1]]
 		return n.Lat, n.Lon
 	}

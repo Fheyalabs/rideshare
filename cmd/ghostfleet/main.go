@@ -92,10 +92,7 @@ func main() {
 					continue
 				}
 				log.Printf("[%s] bidding %d (offer %d)", d.Pseudonym, bid, inv.OfferedPrice)
-				// Real-crypto bid needs openfhe tag — skip in stub mode.
-				_ = bid
-				_ = inv
-				_ = signers[i]
+				submitBidReal(d, inv, bid, signers[i], client, 1<<15, 5, inv.SessionID)
 			}
 		}
 		if *riderMode {
