@@ -31,3 +31,7 @@ func New(cfg Config) *Server {
 
 // Handler returns the HTTP handler (for httptest + ListenAndServe).
 func (s *Server) Handler() http.Handler { return s.mux }
+
+// ServerMux returns the underlying ServeMux so callers can mount additional
+// routes (e.g. the dashboard) on the same server.
+func (s *Server) ServerMux() *http.ServeMux { return s.mux }
