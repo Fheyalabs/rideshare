@@ -69,6 +69,13 @@ func NewRideshareServer(cfg Config) *RideshareServer {
 // Ratings returns the server's driver rating store (for seeding test data).
 func (rs *RideshareServer) Ratings() *rating.Store { return rs.ratings }
 
+// Pool returns the offer pool for a session (nil if none).
+func (rs *RideshareServer) Pool(sessionID string) *offerpool.Pool {
+	rs.mu.RLock()
+	defer rs.mu.RUnlock()
+	return rs.pools[sessionID]
+}
+
 // --- artifacts ---
 
 func (rs *RideshareServer) handleArtifactPut(w http.ResponseWriter, r *http.Request) {

@@ -31,6 +31,11 @@ func (c *Client) get(path string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
+// Post sends a JSON POST and returns the raw response body.
+func (c *Client) Post(path string, body any) ([]byte, error) {
+	return c.post(path, body)
+}
+
 func (c *Client) post(path string, body any) ([]byte, error) {
 	b, _ := json.Marshal(body)
 	resp, err := http.Post(c.Base+path, "application/json", bytes.NewReader(b))

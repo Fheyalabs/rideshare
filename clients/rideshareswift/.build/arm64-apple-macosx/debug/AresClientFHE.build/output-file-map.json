@@ -1,0 +1,89 @@
+{
+  "": {
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/master.swiftdeps"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/BoundCheckParticipant.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/BoundCheckParticipant.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/BoundCheckParticipant.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/BoundCheckParticipant~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/BoundCheckParticipant.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/BoundCheckParticipant.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/Context.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Context.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Context.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Context~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Context.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Context.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/Decrypt.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Decrypt.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Decrypt.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Decrypt~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Decrypt.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Decrypt.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/Encrypt.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Encrypt.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Encrypt.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Encrypt~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Encrypt.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Encrypt.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/EvalKeyRounds.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyRounds.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyRounds.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyRounds~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyRounds.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyRounds.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/EvalKeyShares.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyShares.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyShares.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyShares~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyShares.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalKeyShares.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/EvalOps.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalOps.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalOps.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalOps~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalOps.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/EvalOps.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/FHEEnvironment.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEEnvironment.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEEnvironment.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEEnvironment~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEEnvironment.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEEnvironment.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/FHEError.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEError.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEError.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEError~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEError.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/FHEError.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/Handles.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Handles.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Handles.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Handles~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Handles.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Handles.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/Keygen.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Keygen.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Keygen.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Keygen~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Keygen.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Keygen.dia"
+  },
+  "/Users/hardik/Fheya/repos/ARES-core/clients/swift/Sources/AresClientFHE/Serialization.swift": {
+    "dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Serialization.d",
+    "object": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Serialization.swift.o",
+    "swiftmodule": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Serialization~partial.swiftmodule",
+    "swift-dependencies": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Serialization.swiftdeps",
+    "diagnostics": "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/Serialization.dia"
+  }
+}

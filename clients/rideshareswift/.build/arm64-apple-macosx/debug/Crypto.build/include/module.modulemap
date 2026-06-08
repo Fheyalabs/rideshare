@@ -1,0 +1,3 @@
+module Crypto {
+    header "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/Crypto.build/include/Crypto-Swift.h"
+}
