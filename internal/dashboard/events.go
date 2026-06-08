@@ -6,15 +6,40 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
+
+	h3 "github.com/uber/h3-go/v4"
 )
 
 // Event is a lifecycle event emitted during the demo loop.
 type Event struct {
-	Type    string `json:"type"`    // "phase", "wire", "winner", "loop"
-	Party   string `json:"party,omitempty"`
-	Phase   string `json:"phase,omitempty"`
-	Detail  string `json:"detail,omitempty"`
-	Payload string `json:"payload,omitempty"` // hex-encoded ciphertext or message
+	Type     string           `json:"type"`              // "phase", "wire", "marker", "hex", "loop", "connected"
+	Party    string           `json:"party,omitempty"`   // rider, driver pseudonym, server, cell
+	Phase    string           `json:"phase,omitempty"`   // lifecycle phase (IDLE, DISCOVERING, KEYGEN, BIDDING, etc.)
+	Detail   string           `json:"detail,omitempty"`  // human-readable detail
+	Payload  string           `json:"payload,omitempty"` // wire payload (hex ciphertext, message)
+	Lat      float64          `json:"lat,omitempty"`     // GPS latitude (for markers + hex overlay)
+	Lng      float64          `json:"lng,omitempty"`     // GPS longitude
+	Geometry *json.RawMessage `json:"geometry,omitempty"` // pre-computed GeoJSON polygon (for hex cells)
+}
+
+// HexGeometry computes a GeoJSON Polygon for an H3 cell.
+func HexGeometry(cell uint64) []byte {
+	b, err := h3.CellToBoundary(h3.Cell(cell))
+	if err != nil || len(b) == 0 {
+		return nil
+	}
+	// Build GeoJSON Polygon: [[[lng,lat],[lng,lat],...]]
+	ring := make([][]float64, 0, len(b)+1)
+	for _, v := range b {
+		ring = append(ring, []float64{v.Lng, v.Lat})
+	}
+	ring = append(ring, ring[0]) // close ring
+	geom := struct {
+		Type        string        `json:"type"`
+		Coordinates [][][]float64 `json:"coordinates"`
+	}{Type: "Polygon", Coordinates: [][][]float64{ring}}
+	data, _ := json.Marshal(geom)
+	return data
 }
 
 // Bus is a thread-safe broadcast channel for dashboard events.

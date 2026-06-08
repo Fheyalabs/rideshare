@@ -241,7 +241,8 @@ func (rs *RideshareServer) handleSessionOpen(w http.ResponseWriter, r *http.Requ
 	rs.sessions[body.SessionID] = sess
 	rs.pools[body.SessionID] = offerpool.New(3, holdTTL)
 	for _, p := range cands {
-		rs.invites[p] = append(rs.invites[p], inv)
+		// Replace stale invites — each new session supersedes old ones.
+		rs.invites[p] = []Invite{inv}
 	}
 	rs.mu.Unlock()
 

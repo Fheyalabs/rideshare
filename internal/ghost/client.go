@@ -112,7 +112,7 @@ func (c *Client) OpenSession(req map[string]any) ([]string, error) {
 func (c *Client) GetMasks(sessionID string) ([]string, error) {
 	data, err := c.get("/session/" + sessionID + "/masks")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w (body: %s)", err, string(data))
 	}
 	var out struct{ MaskHandles []string `json:"mask_handles"` }
 	json.Unmarshal(data, &out)
