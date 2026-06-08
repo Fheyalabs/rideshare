@@ -18,3 +18,4 @@ node_modules/
 Package.resolved
 clients/kotlin/.gradle/
 clients/kotlin/build/
+bin/
