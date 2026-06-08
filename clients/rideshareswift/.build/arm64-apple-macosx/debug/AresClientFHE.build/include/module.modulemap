@@ -1,3 +1,0 @@
-module AresClientFHE {
-    header "/Users/hardik/Fheya/repos/rideshare/clients/rideshareswift/.build/arm64-apple-macosx/debug/AresClientFHE.build/include/AresClientFHE-Swift.h"
-}
