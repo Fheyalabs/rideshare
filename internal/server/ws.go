@@ -57,6 +57,7 @@ func NewRideshareServer(cfg Config) *RideshareServer {
 	rs.mux.HandleFunc("POST /session/open", rs.handleSessionOpen)
 	rs.mux.HandleFunc("POST /session/bid", rs.handleSessionBid)
 	rs.mux.HandleFunc("GET /invites/{pseudonym}", rs.handleInvites)
+	rs.mux.HandleFunc("POST /offer/hold", rs.handleOfferHold)
 	rs.mux.HandleFunc("POST /offer/accept", rs.handleOfferAccept)
 	rs.mux.HandleFunc("POST /offer/cancel", rs.handleOfferCancel)
 	rs.mux.HandleFunc("GET /offer/held", rs.handleOfferHeld)
@@ -307,6 +308,33 @@ func (rs *RideshareServer) pool(sessionID string) (*offerpool.Pool, bool) {
 	p, ok := rs.pools[sessionID]
 	rs.mu.RUnlock()
 	return p, ok
+}
+
+func (rs *RideshareServer) handleOfferHold(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		SessionID  string `json:"session_id"`
+		OfferID    string `json:"offer_id"`
+		Driver     string `json:"driver"`
+		PriceCents int    `json:"price_cents"`
+		Star       float64
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		http.Error(w, "invalid body", http.StatusBadRequest)
+		return
+	}
+	p, ok := rs.pool(body.SessionID)
+	if !ok {
+		http.Error(w, "pool not found", http.StatusNotFound)
+		return
+	}
+	if err := p.Hold(offerpool.Offer{
+		ID: body.OfferID, Driver: body.Driver,
+		PriceCents: body.PriceCents, Star: body.Star,
+	}); err != nil {
+		http.Error(w, err.Error(), http.StatusConflict)
+		return
+	}
+	writeJSON(w, http.StatusCreated, map[string]string{"status": "held"})
 }
 
 func (rs *RideshareServer) handleOfferAccept(w http.ResponseWriter, r *http.Request) {

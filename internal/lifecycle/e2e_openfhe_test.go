@@ -4,6 +4,7 @@ package lifecycle
 
 import (
 	"crypto/sha256"
+	"fmt"
 	"net/http/httptest"
 	"os"
 	"testing"
@@ -105,7 +106,7 @@ func TestE2E_HappyPath_FullRideLifecycle(t *testing.T) {
 
 	winNonce := driverNonces[winner]
 
-	// ── 5. Shared secret derivation ──
+	// ── 5. Rider holds winning offer → shared secret ──
 
 	riderSecret := sha256Hash(winNonce, []byte(sessionID))
 	driverSecret := sha256Hash(winNonce, []byte(sessionID))
@@ -113,7 +114,34 @@ func TestE2E_HappyPath_FullRideLifecycle(t *testing.T) {
 		t.Error("shared secret mismatch between rider and winning driver")
 	}
 
-	// ── 6. COMPLETE: both return to IDLE ──
+	// Rider holds the winning offer (triggers exclusion)
+	holdResp, holdErr := client.Post("/offer/hold", map[string]any{
+		"session_id":  sessionID,
+		"offer_id":    fmt.Sprintf("offer-%d", winner),
+		"driver":      drivers[winner].name,
+		"price_cents": 720,
+		"star":        4.5,
+	})
+	if holdErr != nil {
+		t.Logf("hold offer: %v (resp=%s)", holdErr, string(holdResp))
+	}
+
+	// ── 6. Winner excluded from re-discovery ──
+
+	pool := rs.Pool(sessionID)
+	if pool != nil && !pool.Excluded(drivers[winner].name) {
+		t.Error("winner should be excluded from re-search after hold")
+	}
+	if pool != nil && pool.Excluded(drivers[2].name) {
+		t.Error("non-winner should NOT be excluded")
+	}
+	if pool == nil {
+		t.Log("pool nil — Hold() may not be wired into session")
+	} else {
+		t.Logf("winner %s held, excluded=%v", drivers[winner].name, pool.Excluded(drivers[winner].name))
+	}
+
+	// ── 7. COMPLETE: both return to IDLE ──
 
 	t.Logf("FULL LIFECYCLE: winner=%s price=€%.2f secret=%x masks=%v",
 		drivers[winner].name, float64([]int{1330, 720, 1649}[winner])/100,
